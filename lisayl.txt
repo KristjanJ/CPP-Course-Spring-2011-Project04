@@ -1,0 +1,35 @@
+1) Mis juhtub, kui mõni tipp, millele sirglõigud viitavad, hävineb?
+Ei juhtu midagi, need sirglõigud hakkavad lihtsalt viitama tippudele, mida enam ei eksisteeri.
+Kui aga sirglõik(või mõni muu objekt) püüab neid tippe kasutada(lugeda/kirjutada sellel mäluaadressil olevat väärtust),
+siis selle tulemusena programm tõenäoliselt jookseb kokku. Programm ei pruugi kokku joosta kohe ja isegi mitte pika aja jooksul - 
+enne seda võib juhtuda, et seda mäluaadressit lugeda püüdes saadakse imelikke väärtusi - see on selle tõttu, et programm käsitleb seda
+mäluaadressit juba vaba mälupesana ning programmil on vaba voli sinna istutada mõni uus new-ga tellitud objekt.
+
+2) Kuidas võiks tipu destruktor teada, millistes sirglõikudes ta esineb?
+Tipul peaks olema dünaamiline massiiv sirglõikudest, milles ta esineb. Seega, kui luuakse sirglõik, siis peaks see
+sirglõik end lisama oma otstippude sirglõikude-massiividesse. Kui see sirglõik hävib, siis peaks ta end vastavate 
+tippude sirglõikude-massiividest eemaldama. 
+
+Samas tipu destruktoril ei ole üldse vaja seda infot teada, sest tema ei tohiks tegeleda sirglõikude kustutamisega.
+Kui see nii oleks, siis peaks tipu või sirglõigu destruktor eemaldama selle sirglõigu ka massiivist, mis sisaldab
+kõiki sirglõike(kogu programmi peale) - see aga eeldaks, et sirglõigul või tipul on sellele massiivile 
+ligipääs - see aga pole hea disain.
+
+Pigem peaks tipus sisalduvat infot sirglõikude kohta kasutama funktsioon, mis tegeleb tipu kustutamisega.
+
+3) Mida võiks tipu destruktor teha, et olukorda parandada?
+Tipu destruktoril pole vaja olukorra parandamiseks midagi teha. Minu ettekujutus sirglõigu lisamisest ja ühe otstipu
+kustutamisest on järgmine.
+
+1. Luuakse sirglõik, mis on määratud kahe tipuga(need tipud võivad sisalduda ka teistes sirglõikudes).
+2. Sirglõik lisab end nende tippude sirglõikude-massiividesse.
+3. Kutsutakse välja funktsioon, mis saab argumendiks tipu, mille ta kustutama peab.
+4. Funktsioon võtab kustutatavast tipust kõik sirglõigud, milles see tipp esineb, ning kusutab need.
+5. Iga kustutatav sirglõik eemaldab end oma mõlema otstipu sirglõikude-massiividest.
+6. Kui kõik antud tipuga seotud sirglõigud on kustutatud, kustutab funktsioon ka tipu.
+
+Teine võimalus oleks see, et tipp ei oma infot ennast sisaldavate sirglõikude kohta. Siis peaks tippu kustutav funktsioon
+ise üles otsima vastavad sirglõikud. See aga pole nii efektiivne, sest iga tipu kustutamisel tuleb selline otsing
+läbi viia.
+
+

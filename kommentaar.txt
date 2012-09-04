@@ -1,0 +1,4 @@
+Klassis MyArray olen teadlikult uue mälu tellimisel tekkivate võimalike vigade käsitlemise jätnud
+selle klassi kasutaja hooleks. Mälu tellimise ebaõnnestumisel on ju siiski vajalik kõrgemat kihti veast
+teavitada ning exceptioni kinni püüdmisel ja uue exceptioni viskamisel ma mõtet ei näe, pigem võiks
+klassi kasutaja algse exceptioniga otse tegeleda.
